@@ -43,17 +43,17 @@ console.log("2");
 
 /* This represents an item object in our database. We need this
 to specify what kind of information the API endpoint will handle */
-const Item = sequelize.define('Item'/*name of the model*/, {
+const item = sequelize.define('item'/*name of the model*/, {
     /*model properties (the stuff in the db) */
     ID: { type: Sequelize.INTEGER },
     Name: { type: Sequelize.STRING },
     Price: { type: Sequelize.FLOAT },
     Category: { type: Sequelize.STRING },
-    Aisle_Number: { type: Sequelize.INTEGER },
+    Aisle_Number: { type: Sequelize.INTEGER }
 })
 
 // don't know what this does, when I uncomment it I get a whole bunch of errors
-Item.sync()
+item.sync()
     .then(() => {
         console.log('Item model synchronized successfully.');
     })
