@@ -70,7 +70,7 @@ UNTESTED*/
 app.get('/api/items'/*Link the user will search (don't know what the prefix will be)*/,
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
-            const allItems = await Item.findAll();
+            const allItems = await item.findAll();
             console.log('Got the items:', allItems);
             res.json(allItems); // Send fetched items back to the client
         } catch (error) {
