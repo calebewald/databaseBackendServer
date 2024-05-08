@@ -79,6 +79,8 @@ app.get('/api/items'/*Link the user will search (don't know what the prefix will
         }
     });
 
+app.get('', async () => { console.log('hello world!') });
+
 console.log("4");
 
 
