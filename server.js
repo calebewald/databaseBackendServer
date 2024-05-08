@@ -30,12 +30,13 @@ console.log("1");
 
 // looks like this works
 const sequelize = new Sequelize("mysql://ue1c7wc2ajrshq8j:15J5HQCm2nnXxdyGHo0d@bloxhgidgazefqzdxmct-mysql.services.clever-cloud.com:3306/bloxhgidgazefqzdxmct");
-try {
-    sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
+sequelize.authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(error => {
+        console.error('Unable to connect to the database:', error);
+    });
 
 console.log("2");
 
@@ -52,7 +53,13 @@ const Item = sequelize.define('Item'/*name of the model*/, {
 })
 
 // don't know what this does, when I uncomment it I get a whole bunch of errors
-Item.sync();
+Item.sync()
+    .then(() => {
+        console.log('Item model synchronized successfully.');
+    })
+    .catch(error => {
+        console.error('Error synchronizing Item model:', error);
+    });
 
 console.log("3");
 
@@ -63,14 +70,14 @@ UNTESTED*/
 app.get('/api/items'/*Link the user will search (don't know what the prefix will be)*/,
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
-            // get all item info from items, don't know what findAll() does but sequelize docs told me to use it
-            const allItems = Item.findAll();
-            console.log('got the items');
+            const allItems = await Item.findAll();
+            console.log('Got the items:', allItems);
+            res.json(allItems); // Send fetched items back to the client
+        } catch (error) {
+            console.error("Couldn't fetch items:", error);
+            res.status(500).json({ error: "Internal server error" }); // Send error response
         }
-        catch {
-            console.log("couldn't fetch items...")
-        }
-    })
+    });
 
 console.log("4");
 
