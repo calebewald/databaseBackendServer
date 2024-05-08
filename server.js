@@ -3,22 +3,19 @@
   it isn't safe (I don't know why though). To create a connection between the two, we need
   a server that can handle requests for information from the frontend, and communicate from
   the backend to fufill them. So in this file you will find: 
-    - a connection to the database
+    - a connection to the database 
     - "route handlers" and "controller functions" which represent the handling of finding 
-        and validating data from requests from the frontend
+        and validating get requests from browser searches
     - Sequelize "models" which represent the type of information that will be recieved from the db
     - probably other stuff too
 */
-// express is the server stuff, sequelize is for mysql specific stuff??
+// express is the server stuff, sequelize is for mysql querying with mysql
 const express = require('express');
 const { Sequelize, Model, DataTypes } = require('sequelize');
 
-var app = express(); // this is the server
-
-console.log("1");
-
-
-/* Creates a sequelize connection to our database, specifying that mysql is the db type*/
+/* Creates a sequelize connection to our database, specifying that mysql is the db type
+   tried this version from the documentation, it doesn't work and I don't know why. Just
+   used URI.*/
 // const sequelize = new Sequelize(
 //     'bloxhgidgazefqzdxmct',
 //     'ue1c7wc2ajrshq8j',
@@ -38,11 +35,12 @@ sequelize.authenticate()
         console.error('Unable to connect to the database:', error);
     });
 
-console.log("2");
-
-
 /* This represents an item object in our database. We need this
-to specify what kind of information the API endpoint will handle */
+to specify what kind of information the API endpoint will handle.
+    had to be really careful with nameing this, started with
+    Item and the sync function below didn't work because the
+    table with the data in it was named "items" not "Items" */
+
 const item = sequelize.define('item'/*name of the model*/, {
     /*model properties (the stuff in the db) */
     ID: { type: DataTypes.INTEGER },
@@ -52,23 +50,25 @@ const item = sequelize.define('item'/*name of the model*/, {
     Aisle_Number: { type: DataTypes.INTEGER }
 });
 
-// don't know what this does, when I uncomment it I get a whole bunch of errors
-item.sync()
-    .then(() => {
+/* Syncronizes the data model with the mysql db. Basically I think it checks for a table
+   that has matching data to the one described in our model. */
+// also utilizes a promise which I understand enough to use it like this, 
+// but could use more work with
+item.sync() // promises to synchronize data with db
+    .then(() => { // executed if the promise is fufilled
         console.log('Item model synchronized successfully.');
     })
-    .catch(error => {
+    .catch(error => { // executed if the promise is not fufilled
         console.error('Error synchronizing Item model:', error);
     });
 
-console.log("3");
 
+// test route handler
+app.get('/', async (req, res) => { res.json("hello world!") });
 
 /*A route handler. This will be run when a GET request (someone searches the '/api/items' link)
 is made. It should hopefully return the information in the "items" table in our database.
-UNTESTED*/
-app.get('/', async (req, res) => { res.json("hello world!") });
-
+*/
 app.get('/api/items'/*Link the user will search (don't know what the prefix will be)*/,
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
@@ -81,10 +81,9 @@ app.get('/api/items'/*Link the user will search (don't know what the prefix will
         }
     });
 
-
-console.log("4");
-
-
+/*Actual server. This is not what I thought it would look like. All it does is
+  listen for requesets on a specific port. */
+var app = express(); // this represents the server
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 
