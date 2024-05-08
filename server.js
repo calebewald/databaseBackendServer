@@ -9,7 +9,6 @@
     - Sequelize "models" which represent the type of information that will be recieved from the db
     - probably other stuff too
 */
-
 // express is the server stuff, sequelize is for mysql specific stuff??
 const express = require('express');
 const { Sequelize, DataTypes } = require('sequelize');
@@ -53,7 +52,7 @@ const Item = sequelize.define('Item'/*name of the model*/, {
 })
 
 // don't know what this does, when I uncomment it I get a whole bunch of errors
-// Item.sync(); 
+Item.sync();
 
 console.log("3");
 
@@ -76,8 +75,6 @@ app.get('/api/items'/*Link the user will search (don't know what the prefix will
 console.log("4");
 
 
-/*If this runs, it will "start" the server. app (which is the server) will listen for any communication
-on port 3000. So something probably has to be sent to port 3000.*/
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 
