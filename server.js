@@ -67,6 +67,8 @@ console.log("3");
 /*A route handler. This will be run when a GET request (someone searches the '/api/items' link)
 is made. It should hopefully return the information in the "items" table in our database.
 UNTESTED*/
+app.get('/', async (req, res) => { res.json("hello world!") });
+
 app.get('/api/items'/*Link the user will search (don't know what the prefix will be)*/,
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
