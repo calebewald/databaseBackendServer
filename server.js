@@ -52,7 +52,7 @@ const Item = sequelize.define('Item'/*name of the model*/, {
     Aisle_Number: { type: Sequelize.INTEGER },
 })
 
-// don't know what this does
+// don't know what this does, when I uncomment it I get a whole bunch of errors
 // Item.sync(); 
 
 console.log("3");
@@ -78,9 +78,9 @@ console.log("4");
 
 /*If this runs, it will "start" the server. app (which is the server) will listen for any communication
 on port 3000. So something probably has to be sent to port 3000.*/
-const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+const PORT = process.env.PORT || 8080;
+const HOST = '0.0.0.0';
+
+const server = app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
 });
-server.close();
-console.log("5");
