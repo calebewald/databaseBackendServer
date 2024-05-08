@@ -11,7 +11,7 @@
 */
 // express is the server stuff, sequelize is for mysql specific stuff??
 const express = require('express');
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 
 var app = express(); // this is the server
 
@@ -45,12 +45,12 @@ console.log("2");
 to specify what kind of information the API endpoint will handle */
 const item = sequelize.define('item'/*name of the model*/, {
     /*model properties (the stuff in the db) */
-    ID: { type: Sequelize.INTEGER },
-    Name: { type: Sequelize.STRING },
-    Price: { type: Sequelize.FLOAT },
-    Category: { type: Sequelize.STRING },
-    Aisle_Number: { type: Sequelize.INTEGER }
-})
+    ID: { type: DataTypes.INTEGER },
+    Name: { type: DataTypes.STRING },
+    Price: { type: DataTypes.FLOAT },
+    Category: { type: DataTypes.STRING },
+    Aisle_Number: { type: DataTypes.INTEGER }
+});
 
 // don't know what this does, when I uncomment it I get a whole bunch of errors
 item.sync()
