@@ -62,6 +62,7 @@ item.sync() // promises to synchronize data with db
         console.error('Error synchronizing Item model:', error);
     });
 
+var app = express(); // this represents the server
 
 // test route handler
 app.get('/', async (req, res) => { res.json("hello world!") });
@@ -83,7 +84,6 @@ app.get('/api/items'/*Link the user will search (don't know what the prefix will
 
 /*Actual server. This is not what I thought it would look like. All it does is
   listen for requesets on a specific port. */
-var app = express(); // this represents the server
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 
