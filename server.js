@@ -9,13 +9,15 @@
     - Sequelize "models" which represent the type of information that will be recieved from the db
     - probably other stuff too
 */
-// express is the server stuff, sequelize is for mysql querying with mysql
+// express is the server stuff, sequelize is for mysql querying with mysql. The same as 
+// an import as far as I can tell
 const express = require('express');
 const { Sequelize, Model, DataTypes } = require('sequelize');
+const cors = require('cors');
 
 /* Creates a sequelize connection to our database, specifying that mysql is the db type
    tried this version from the documentation, it doesn't work and I don't know why. Just
-   used URI.*/
+   used the URI.*/
 // const sequelize = new Sequelize(
 //     'bloxhgidgazefqzdxmct',
 //     'ue1c7wc2ajrshq8j',
@@ -25,7 +27,7 @@ const { Sequelize, Model, DataTypes } = require('sequelize');
 //         dialect: 'mysql',
 //     });
 
-// looks like this works
+// looks like this works to connect to db
 const sequelize = new Sequelize("mysql://ue1c7wc2ajrshq8j:15J5HQCm2nnXxdyGHo0d@bloxhgidgazefqzdxmct-mysql.services.clever-cloud.com:3306/bloxhgidgazefqzdxmct");
 sequelize.authenticate()
     .then(() => {
@@ -63,28 +65,33 @@ item.sync() // promises to synchronize data with db
     });
 
 var app = express(); // this represents the server
+// without this the react app can't make GET requests to our server
+app.use(cors());
 
-// test route handler
+// test route handler, should print hello world when accessing clever cloud domain 
 app.get('/', async (req, res) => { res.json("hello world!") });
 
 /*A route handler. This will be run when a GET request (someone searches the '/api/items' link)
 is made. It should hopefully return the information in the "items" table in our database.
 */
-app.get('/api/items'/*Link the user will search (don't know what the prefix will be)*/,
+app.get('/api/items'/*Link the user will search (prefix is the clever cloud domain)*/,
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
+            // this took forever to figure out, findAll() adds the exclude fields by default
+            // for no good reason and since our table doesn't have them the sync failed
             const allItems = await item.findAll({ attributes: { exclude: ['id', 'createdAt', 'updatedAt'] } });
             console.log('Got the items:', allItems);
-            res.json(allItems); // Send fetched items back to the client
+            res.json(allItems); // Send fetched items back to the client, display the json
         } catch (error) {
             console.error("Couldn't fetch items:", error);
             res.status(500).json({ error: "Internal server error" }); // Send error response
         }
     });
 
-/*Actual server. This is not what I thought it would look like. All it does is
-  listen for requesets on a specific port. */
-const PORT = process.env.PORT || 8080;
+/*This is the complexity of the server, it "listens" on port 8080 for requests. The only request
+I know of is a GET request, where when someone searches "http:/localhost:8080" the server (catches?)
+ the request, and handles it with a corresponding controller function based on the link searched*/
+const PORT = process.env.PORT || 8080; // process.env.PORT is an environment 
 const HOST = '0.0.0.0';
 
 const server = app.listen(PORT, HOST, () => {
