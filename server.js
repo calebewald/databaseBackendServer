@@ -74,7 +74,7 @@ app.get('/', async (req, res) => { res.json("hello world!") });
 /*A route handler. This will be run when a GET request (someone searches the '/api/items' link)
 is made. It should hopefully return the information in the "items" table in our database.
 */
-app.get('/api/items'/*Link the user will search (prefix is the clever cloud domain)*/,
+app.get('/api/items',/*Link the user will search (prefix is the clever cloud domain)*/
     async (req, res) => { /*Controller function. Run upon recieving the data */
         try {
             // this took forever to figure out, findAll() adds the exclude fields by default
@@ -87,6 +87,18 @@ app.get('/api/items'/*Link the user will search (prefix is the clever cloud doma
             res.status(500).json({ error: "Internal server error" }); // Send error response
         }
     });
+
+app.post('/',
+    async (req, res) => {
+        console.log("this is req:" + req);
+        try {
+            const { ID, Name, Price, Category, Aisle_Number } = req.body; // this should be the data that is sent
+            const newData = await DataTypes.create({ ID, Name, Price, Category, Aisle_Number });
+        }
+        catch (error) {
+            console.error("something went wrong with the post request");
+        }
+    })
 
 /*This is the complexity of the server, it "listens" on port 8080 for requests. The only request
 I know of is a GET request, where when someone searches "http:/localhost:8080" the server (catches?)
