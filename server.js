@@ -67,6 +67,7 @@ item.sync() // promises to synchronize data with db
 var app = express(); // this represents the server
 // without this the react app can't make GET requests to our server
 app.use(cors());
+app.use(express());
 
 // test route handler, should print hello world when accessing clever cloud domain 
 app.get('/', async (req, res) => { res.json("hello world!") });
@@ -98,6 +99,7 @@ app.post('/data',
         catch (error) {
             console.error("something went wrong with the post request");
             console.log(error);
+            res.status(500).json({ error: 'Internal server error' });
         }
     })
 
