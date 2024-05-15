@@ -88,7 +88,7 @@ app.get('/api/items',/*Link the user will search (prefix is the clever cloud dom
         }
     });
 
-app.post('/',
+app.post('/data',
     async (req, res) => {
         console.log("this is req:" + req);
         try {
@@ -97,6 +97,7 @@ app.post('/',
         }
         catch (error) {
             console.error("something went wrong with the post request");
+            console.log(error);
         }
     })
 
