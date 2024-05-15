@@ -91,7 +91,12 @@ app.get('/api/items',/*Link the user will search (prefix is the clever cloud dom
 
 app.post('/data',
     async (req, res) => {
-        console.log("this is req:" + req);
+        console.log("Request URL:", req.url);
+        console.log("Request Method:", req.method);
+        console.log("Request Parameters:", req.params);
+        console.log("Request Query:", req.query);
+        console.log("Request Body:", req.body);
+
         try {
             const { ID, Name, Price, Category, Aisle_Number } = req.body; // this should be the data that is sent
             const newData = await DataTypes.create({ ID, Name, Price, Category, Aisle_Number });
