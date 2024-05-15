@@ -81,7 +81,7 @@ app.get('/api/items',/*Link the user will search (prefix is the clever cloud dom
         try {
             // this took forever to figure out, findAll() adds the exclude fields by default
             // for no good reason and since our table doesn't have them the sync failed
-            const allItems = await item.findAll();
+            const allItems = await item.findAll({ attributes: { exclude: ['id', 'createdAt', 'updatedAt'] } });
             console.log('Got the items:', allItems);
             res.json(allItems); // Send fetched items back to the client, display the json
         } catch (error) {
@@ -98,7 +98,9 @@ app.post('/data', async (req, res) => {
         console.log("Request Query:", req.query);
         console.log("Request Body:", req.body);
         const { ID, Name, Price, Category, Aisle_Number } = req.body;
-        const newItem = await item.create({ ID, Name, Price, Category, Aisle_Number });
+        const newItem = await item.create({ ID, Name, Price, Category, Aisle_Number }
+            , { exclude: ['id', 'createdAt', 'updatedAt'] }
+        );
         res.status(201).json({ message: 'Data created successfully', newItem });
     } catch (error) {
         console.error('Error creating data:', error);
