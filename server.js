@@ -50,7 +50,7 @@ const item = sequelize.define('item'/*name of the model*/, {
     Price: { type: DataTypes.FLOAT },
     Category: { type: DataTypes.STRING },
     Aisle_Number: { type: DataTypes.INTEGER }
-}, { exclude: ['id', 'createdAt', 'updatedAt'] });
+}, { timestamps: false, id: false });
 
 /* Syncronizes the data model with the mysql db. Basically I think it checks for a table
    that has matching data to the one described in our model. */
