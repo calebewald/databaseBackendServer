@@ -98,7 +98,9 @@ app.post('/data', async (req, res) => {
         console.log("Request Query:", req.query);
         console.log("Request Body:", req.body);
         const { ID, Name, Price, Category, Aisle_Number } = req.body;
-        const newItem = await item.create({ ID, Name, Price, Category, Aisle_Number });
+        const newItem = await item.create({ ID, Name, Price, Category, Aisle_Number }
+            , { fields: ['ID', 'Name', 'Price', 'Category', 'Aisle_Number'] }
+        );
         res.status(201).json({ message: 'Data created successfully', newItem });
     } catch (error) {
         console.error('Error creating data:', error);
