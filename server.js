@@ -99,7 +99,7 @@ app.post('/data',
         catch (error) {
             console.error("something went wrong with the post request");
             console.log(error);
-            res.status(500).json({ error: 'Internal server error' });
+            res.status(500).json({ error: 'Internal server error, ' + req.body });
         }
     })
 
