@@ -90,24 +90,21 @@ app.get('/api/items',/*Link the user will search (prefix is the clever cloud dom
         }
     });
 
-app.post('/data',
-    async (req, res) => {
+app.post('/data', async (req, res) => {
+    try {
         console.log("Request URL:", req.url);
         console.log("Request Method:", req.method);
         console.log("Request Parameters:", req.params);
         console.log("Request Query:", req.query);
         console.log("Request Body:", req.body);
-
-        try {
-            const { ID, Name, Price, Category, Aisle_Number } = req.body; // this should be the data that is sent
-            const newData = await DataTypes.create({ ID, Name, Price, Category, Aisle_Number });
-        }
-        catch (error) {
-            console.error("something went wrong with the post request");
-            console.log(error);
-            res.status(500).json({ error: 'Internal server error, ' + req.body });
-        }
-    })
+        const { ID, Name, Price, Category, Aisle_Number } = req.body;
+        const newItem = await item.create({ ID, Name, Price, Category, Aisle_Number });
+        res.status(201).json({ message: 'Data created successfully', newItem });
+    } catch (error) {
+        console.error('Error creating data:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 /*This is the complexity of the server, it "listens" on port 8080 for requests. The only request
 I know of is a GET request, where when someone searches "http:/localhost:8080" the server (catches?)
