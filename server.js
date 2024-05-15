@@ -43,14 +43,21 @@ to specify what kind of information the API endpoint will handle.
     Item and the sync function below didn't work because the
     table with the data in it was named "items" not "Items" */
 
-const item = sequelize.define('item'/*name of the model*/, {
-    /*model properties (the stuff in the db) */
+class item extends Model { }
+item.init({
     ID: { type: DataTypes.INTEGER },
     Name: { type: DataTypes.STRING },
     Price: { type: DataTypes.FLOAT },
     Category: { type: DataTypes.STRING },
     Aisle_Number: { type: DataTypes.INTEGER }
+}, {
+    sequelize,
+    modelName: 'item',
+    tableName: 'items',
+    timestamps: false  // Disable automatic timestamps
 });
+
+module.exports = item;
 
 /* Syncronizes the data model with the mysql db. Basically I think it checks for a table
    that has matching data to the one described in our model. */
