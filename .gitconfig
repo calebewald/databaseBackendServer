@@ -1,0 +1,2 @@
+[alias]
+    pushall = !git push origin master && git push clever master
