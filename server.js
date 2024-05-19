@@ -125,3 +125,15 @@ const HOST = '0.0.0.0';
 const server = app.listen(PORT, HOST, () => {
     console.log(`Server is running on http://${HOST}:${PORT}`);
 });
+
+app.post('/data/delete', async (req, res) => {
+    try {
+        const { ID, Name, Price, Category, Aisle_Number } = req.body;
+        await item.destroy({
+            where: req.body
+        });
+    }
+    catch {
+        console.log("something we wrong when trying to delete some data")
+    }
+})
