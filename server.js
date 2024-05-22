@@ -1,4 +1,4 @@
-/*What I understand about this so far:
+/*What I understand about this so far: TEST COMMIT
   We can't access our backend directly from our frontend, because from a security standpoint
   it isn't safe (I don't know why though). To create a connection between the two, we need
   a server that can handle requests for information from the frontend, and communicate from
